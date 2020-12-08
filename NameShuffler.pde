@@ -76,21 +76,19 @@ void draw() {
     ? map(autoshuffleCount, AUTO_SHUFFLE_COUNT, 0, AUTO_SHUFFLE_MAX_DURATION, AUTO_SHUFFLE_MIN_DURATION)
     : MOUSE_CLICK_SHUFFLE_DURATION;
   final float s0 = clampMap(frameCount - startFrame, 0, animationDuration, 0, 1);
-  //final float x = (width - textWidth) / 2;
   final float s = easeInOutCubic(s0);
   for (int i = 0; i < names.size(); i++) {
     final String name = names.get(i);
     final float y0 = currentPositions.get(i).y;
-    final float x = map(s, 0, 1, startPositions.get(i).x, endPositions.get(i).x);
-    final float y = map(s, 0, 1, startPositions.get(i).y, endPositions.get(i).y);
-    final int n = ceil(abs(y - y0));
+    final PVector pos = PVector.lerp(startPositions.get(i), endPositions.get(i), s);
+    final int n = ceil(abs(pos.y - y0));
     for (int j = 0; j < n; j++) {
       fill(map(i, 0, names.size(), 0, 255), 200, 250, map(j, 0, n, 10, 250));
-      text(name, x, map(j, 0, n, y0, y));
+      text(name, pos.x, map(j, 0, n, y0, pos.y));
     }
     fill(map(i, 0, names.size(), 0, 255), 120, 250);
-    currentPositions.set(i, new PVector(x, floor(y)));
-    text(name, x, y);
+    currentPositions.set(i, new PVector(pos.x, floor(pos.y)));
+    text(name, pos.x, pos.y);
   }
   if (s >= 1 && --autoshuffleCount >= 0) {
     startShuffle();
