@@ -20,7 +20,7 @@ ArrayList<PVector> startPositions;
 ArrayList<PVector> endPositions;
 ArrayList<PVector> currentPositions;
 
-SoundFile clickSample;
+SoundFile clickSound, chimeSound;
 
 int startFrame = 15;
 int autoshuffleCount = AUTO_SHUFFLE_COUNT;
@@ -41,7 +41,8 @@ void setup() {
   //fullScreen();
   colorMode(HSB);
 
-  clickSample = new SoundFile(this, "60013__qubodup__whoosh.mp3");
+  clickSound = new SoundFile(this, "60013__qubodup__whoosh.mp3");
+  chimeSound = new SoundFile(this, "75336__neotone__chime1.mp3");
 
   String[] namesArray = loadStrings("names.txt");
   names = stringListFromArray(namesArray != null ? namesArray : defaultNameStrings);
@@ -102,8 +103,12 @@ void draw() {
     currentPositions.set(i, new PVector(pos.x, floor(pos.y)));
     text(name, pos.x, pos.y);
   }
-  if (s >= 1 && --autoshuffleCount >= 0) {
-    startShuffle();
+  if (s >= 1) {
+    if (--autoshuffleCount >= 0) {
+      startShuffle();
+    } else if (autoshuffleCount == -1) {
+      chimeSound.play();
+    }
   }
 }
 
@@ -122,7 +127,7 @@ void startShuffle() {
   startFrame = frameCount;
   startPositions = currentPositions;
   endPositions = (ArrayList<PVector>) shuffled(positions);
-  clickSample.play();
+  clickSound.play();
 }
 
 ArrayList shuffled(ArrayList lst) {

@@ -12,5 +12,6 @@ To use:
 
 ## Credits
 
-The woosh sound is by [qubodup
-@freesound.org](https://freesound.org/people/qubodup/sounds/60013/).
+* Woosh sound: [qubodup
+@freesound.org](https://freesound.org/people/qubodup/sounds/60013/)
+* Chime sound: [Neotone @ freesound.org](https://freesound.org/people/Neotone/sounds/75336/)
