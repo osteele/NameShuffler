@@ -18,7 +18,6 @@ ArrayList<PVector> positions;
 ArrayList<PVector> startPositions;
 ArrayList<PVector> endPositions;
 ArrayList<PVector> currentPositions;
-float textWidth;
 
 int startFrame = 15;
 int autoshuffleCount = AUTO_SHUFFLE_COUNT;
@@ -43,24 +42,32 @@ void setup() {
   names = stringListFromArray(namesArray != null ? namesArray : defaultNameStrings);
   autoshuffleCount = names.size();
 
+  final int columns = ceil(sqrt(names.size() / 3));
+  final int rows = ceil(names.size() / columns);
   for (float textSize = 180; textSize > 12; textSize *= 0.8) {
     textSize(textSize);
     final float textLineHeight = textAscent() + textDescent();
     final float textLeading = textLineHeight * 1.5;
-    final float textHeight = (names.size() - 1) * textLeading + textLineHeight;
+    final float textHeight = (rows - 1) * textLeading + textLineHeight;
 
-    textWidth = 0;
+    float textWidth = 0;
     positions = new ArrayList<PVector>();
     for (int i = 0; i < names.size(); i++) {
       textWidth = max(textWidth, textWidth(names.get(i)));
     }
-    final float x = (width - textWidth) / 2;
-    float y = (height - textHeight + textLeading) / 2;
+    final float columnWidth = textWidth + 50; 
+    final float columnTop = (height - textHeight + textLeading) / 2;
+    float x = (width - columns * columnWidth) / 2 - columnWidth;
+    float y = 0;
     for (int i = 0; i < names.size(); i++) {
+      if (i % rows == 0) {
+        x += columnWidth;
+        y = columnTop;
+      }
       positions.add(new PVector(x, floor(y)));
       y += textLeading;
     }
-    if (textWidth < width && textHeight < height) break;
+    if (columns * columnWidth < width && textHeight < height) break;
   }
 
   startPositions = (ArrayList<PVector>) positions.clone();
