@@ -10,9 +10,10 @@
 import processing.sound.*;
 
 final int MOUSE_CLICK_SHUFFLE_DURATION = 60;
-final int AUTO_SHUFFLE_COUNT = 5;
+final int AUTO_SHUFFLE_COUNT = 10;
 final int AUTO_SHUFFLE_MAX_DURATION = 40;
 final int AUTO_SHUFFLE_MIN_DURATION = 15;
+final int WINDOW_MARGIN = 10;
 
 StringList names;
 ArrayList<PVector> positions;
@@ -37,8 +38,8 @@ String defaultNameStrings[] = {
 String nameStrings[];
 
 void setup() {
-  size(500, 500);
-  //fullScreen();
+  //size(500, 500);
+  fullScreen();
   colorMode(HSB);
 
   clickSound = new SoundFile(this, "60013__qubodup__whoosh.mp3");
@@ -73,7 +74,7 @@ void setup() {
       positions.add(new PVector(x, floor(y)));
       y += textLeading;
     }
-    if (columns * columnWidth < width && textHeight < height) break;
+    if (columns * columnWidth < width - 2 * WINDOW_MARGIN && textHeight < height) break;
   }
 
   startPositions = (ArrayList<PVector>) positions.clone();
