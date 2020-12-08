@@ -7,6 +7,7 @@
 // Edit a list of names into nameStrings, below.
 // Run the program. It presents them shuffled.
 // Click to shuffle agin.
+import processing.sound.*;
 
 final int MOUSE_CLICK_SHUFFLE_DURATION = 60;
 final int AUTO_SHUFFLE_COUNT = 5;
@@ -18,6 +19,8 @@ ArrayList<PVector> positions;
 ArrayList<PVector> startPositions;
 ArrayList<PVector> endPositions;
 ArrayList<PVector> currentPositions;
+
+SoundFile clickSample;
 
 int startFrame = 15;
 int autoshuffleCount = AUTO_SHUFFLE_COUNT;
@@ -38,6 +41,8 @@ void setup() {
   //fullScreen();
   colorMode(HSB);
 
+  clickSample = new SoundFile(this, "60013__qubodup__whoosh.mp3");
+
   String[] namesArray = loadStrings("names.txt");
   names = stringListFromArray(namesArray != null ? namesArray : defaultNameStrings);
   autoshuffleCount = names.size();
@@ -55,7 +60,7 @@ void setup() {
     for (int i = 0; i < names.size(); i++) {
       textWidth = max(textWidth, textWidth(names.get(i)));
     }
-    final float columnWidth = textWidth + 50; 
+    final float columnWidth = textWidth + 50;
     final float columnTop = (height - textHeight + textLeading) / 2;
     float x = (width - columns * columnWidth) / 2 - columnWidth;
     float y = 0;
@@ -117,6 +122,7 @@ void startShuffle() {
   startFrame = frameCount;
   startPositions = currentPositions;
   endPositions = (ArrayList<PVector>) shuffled(positions);
+  clickSample.play();
 }
 
 ArrayList shuffled(ArrayList lst) {
