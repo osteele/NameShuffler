@@ -10,9 +10,9 @@
 import processing.sound.*;
 
 final int MOUSE_CLICK_SHUFFLE_DURATION = 60;
-final int AUTO_SHUFFLE_COUNT = 10;
+final int AUTO_SHUFFLE_COUNT = 30;
 final int AUTO_SHUFFLE_MAX_DURATION = 40;
-final int AUTO_SHUFFLE_MIN_DURATION = 15;
+final int AUTO_SHUFFLE_MIN_DURATION = 1;
 final int WINDOW_MARGIN = 10;
 
 StringList names;
@@ -22,6 +22,7 @@ ArrayList<PVector> endPositions;
 ArrayList<PVector> currentPositions;
 
 SoundFile clickSound, chimeSound;
+int startChimeMs = -1;
 
 int startFrame = 15;
 int autoshuffleCount = AUTO_SHUFFLE_COUNT;
@@ -47,7 +48,7 @@ void setup() {
 
   String[] namesArray = loadStrings("names.txt");
   names = stringListFromArray(namesArray != null ? namesArray : defaultNameStrings);
-  autoshuffleCount = names.size();
+  // autoshuffleCount = names.size();
 
   final int columns = ceil(sqrt(names.size() / 3));
   final int rows = ceil(names.size() / columns);
@@ -105,11 +106,16 @@ void draw() {
     text(name, pos.x, pos.y);
   }
   if (s >= 1) {
+    if (autoshuffleCount == 0) {
+      startChimeMs = millis() + 1000;
+    }
     if (--autoshuffleCount >= 0) {
       startShuffle();
-    } else if (autoshuffleCount == -1) {
-      chimeSound.play();
-    }
+    } 
+  }
+  if (startChimeMs >= 0 && millis() >= startChimeMs) {
+    chimeSound.play();
+    startChimeMs = -1;
   }
 }
 
