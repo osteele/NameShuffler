@@ -1,12 +1,15 @@
-// Name: name-shuffler.pde
-// Author: Oliver Steele
-// Source: https://gist.github.com/osteele/3351fb073ab0ea4e1568b7d7e9310447
-// License: MIT
-//
-// Instructions:
-// Edit a list of names into nameStrings, below.
-// Run the program. It presents them shuffled.
-// Click to shuffle agin.
+/**
+ * NameShuffler
+ *
+ * Author: Oliver Steele
+ * Source: https://gist.github.com/osteele/3351fb073ab0ea4e1568b7d7e9310447
+ * License: MIT
+ *
+ * Instructions:
+ * 1. Create a file data/names.txt, with one name per line.
+ * 2. Run the sketch. It presents them shuffled.
+ * 3. Click to shuffle the names again.
+ */
 import processing.sound.*;
 
 final int MOUSE_CLICK_SHUFFLE_DURATION = 60;
@@ -111,7 +114,7 @@ void draw() {
     }
     if (--autoshuffleCount >= 0) {
       startShuffle();
-    } 
+    }
   }
   if (startChimeMs >= 0 && millis() >= startChimeMs) {
     chimeSound.play();
